@@ -1,0 +1,13 @@
+﻿@model Electronics.Application.ProductType.ProductTypeDto
+
+<h2>Edit Product Type</h2>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-success">Save Changes</button>
+</form>

@@ -1,0 +1,64 @@
+﻿@model List<Electronics.Application.Product.ProductDto>
+<br />
+<br />
+
+<h2 class="text-center">Your Cart</h2>
+<br />
+<br />
+@if (!Model.Any())
+{
+    <p>Your cart is empty.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @foreach (var i in item.ImageUrls)
+                        {
+                            <img src="@Url.Content("~/" + i)" alt="Thumbnail" style="width:100px; height:100px" class="mx-auto d-block" />
+                            break;
+                        }
+                    </td>
+                    <td>@item.Name</td>
+                    <td>@item.Price</td>
+                    <td>@item.Quantity</td>
+                    <td>@(item.Price * item.Quantity)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+    <br />
+    <hr />
+    <div class="row mt-4">
+        <div class="col-md-6 text-center">
+        </div>
+        <div class="col-md-6 text-end">
+            <h4>Total Price: TK @Model.Sum(p => p.Price * p.Quantity)</h4>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-6 text-center">
+        </div>
+        <div class="col-md-6 text-end">
+            <form method="post" asp-action="ConfirmOrder" asp-controller="Cart" asp-area="Customer">
+                <button type="submit" class="btn btn-primary">Checkout</button>
+            </form>
+        </div>
+    </div>
+
+}
+

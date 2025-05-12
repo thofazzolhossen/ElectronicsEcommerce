@@ -1,0 +1,15 @@
+﻿@model Electronics.Presentation.Areas.Admin.Views.ProductImage.ProductImageVM
+
+<h2>Delete Product Image</h2>
+
+<div>
+    <p>Are you sure you want to delete this image?</p>
+    <p><strong>Product:</strong> @Model.Id</p>
+    <img src="~/@Model.ImagePath" width="150" />
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

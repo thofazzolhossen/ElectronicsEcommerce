@@ -1,0 +1,161 @@
+﻿@using Electronics.Application.Product
+@using Electronics.Presentation.Utility
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    // Initialize the count
+    int count = 0;
+
+    // Get the cart (list of products) from the session
+    List<ProductDto> cart = HttpContextAccessor.HttpContext.Session.Get<List<ProductDto>>("Cart");
+
+    // If the cart is null, initialize it to an empty list
+    if (cart == null)
+    {
+        cart = new List<ProductDto>();
+    }
+
+    // Count the total number of products in the cart (including quantity)
+    count = cart.Sum(p => p.Quantity);
+}
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shahdad - @ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/Electronics.Presentation.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Electronics.Presentation</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <header class="bg-light py-1">
+        <div  class="navbar navbar-expand-lg container-fluid d-flex justify-content-between align-items-center large text-muted bg-primary">
+            <div>
+                <i style="color:white" class="fa fa-phone "></i> <h6 class="d-inline" style="color:white"> 1-800-123-4567</h6>
+                <i style="color:white" class="fa fa-envelope"></i> <h6 style="color:white" class="d-inline mx-3">support@robodocbd.com</h6>
+            </div>
+            <div>
+                <a style="text-decoration:none" href="#" class="text-muted"><h6 style="color:white; text-decoration:none">Sign In</h6></a>
+            </div>
+        </div>
+
+        <div class="container-fluid py-5 d-flex justify-content-between align-items-center flex-wrap">
+            <!-- Logo -->
+            <div class="d-flex align-items-center">
+@*                 <img src="logo.png" alt="RoboDoc Logo" style="height: 40px;" />
+ *@                <span class="fs-4 fw-bold text-success ms-2">eCommerce</span>
+            </div>
+
+            <!-- Small Centered Search -->
+            <div class="mx-auto" style="max-width: 800px; width: 100%;">
+                <div class="input-group input-group-lg shadow-lg">
+                    <input type="text" class="form-control rounded-start border-success" placeholder="Search anything..." aria-label="Search">
+                    <button class="btn btn-success rounded-end" type="button">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+
+            <!-- Icons -->
+            <div class="d-flex gap-3">
+                <a href="#"><i class="fa fa-user fs-6"></i></a>
+                
+                    <a href="@Url.Action("Index", "Cart", new { area = "Customer" })">
+                        <i class="fa fa-shopping-cart fs-6"></i>
+                        <span id="cartCount" class="badge bg-danger">@count</span>
+                    </a>
+                
+
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="container-fluid navbar navbar-expand-lg navbar-light bg-white">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item dropdown me-5">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="ProductImage" asp-action="Index">Product Image</a></li>
+                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="ProductType" asp-action="Index">Product Type</a></li>
+                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="ProductTag" asp-action="Index">Product Tag</a></li>
+                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Discount" asp-action="Index">Discount</a></li>
+                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown me-5">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Robotics</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Robot 1</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown me-5">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Components</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Component 1</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown me-5">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Sensors</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Sensor 1</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item  me-5">
+                    <a class="nav-link" href="#">Innovation Kit</a>
+                </li>
+                <li class="nav-item me-5">
+                    <a class="nav-link" href="#">Gadgets & Electronics</a>
+                </li>
+                <li class="nav-item me-5">
+                    <a class="nav-link text-warning fw-bold" href="#"><i class="fa fa-gift"></i> Offers</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - Electronics.Presentation - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

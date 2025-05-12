@@ -1,0 +1,39 @@
+﻿@model Electronics.Presentation.Areas.Admin.Views.Discount.DiscountVM
+
+@{
+    ViewData["Title"] = "Discount List";
+}
+
+<h2>All Discounts</h2>
+<a asp-action="Create" class="btn btn-primary">Add New Discount</a>
+<br />
+<br />
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Percentage</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Active</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var discount in Model.AllDiscount)
+        {
+            <tr>
+                <td>@discount.Name</td>
+                <td>@discount.Percentage %</td>
+                <td>@(discount.StartDate?.ToString("yyyy-MM-dd") ?? "N/A")</td>
+                <td>@(discount.EndDate?.ToString("yyyy-MM-dd") ?? "N/A")</td>
+                <td>@(discount.IsActive ? "Yes" : "No")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@discount.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@discount.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

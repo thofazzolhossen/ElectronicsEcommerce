@@ -1,0 +1,74 @@
+﻿@model Electronics.Presentation.Areas.Admin.Views.Product.ProductVM
+
+@{
+    ViewData["Title"] = "Edit Product";
+}
+
+<h2>Edit Product</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Product.Id" />
+
+    <div class="form-group">
+        <label asp-for="Product.Name" class="control-label"></label>
+        <input asp-for="Product.Name" class="form-control" />
+        <span asp-validation-for="Product.Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Product.Price" class="control-label"></label>
+        <input asp-for="Product.Price" class="form-control" />
+        <span asp-validation-for="Product.Price" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Product.Quantity" class="control-label"></label>
+        <input asp-for="Product.Quantity" class="form-control" />
+        <span asp-validation-for="Product.Quantity" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Product.ProductTypeId" class="control-label"></label>
+        <select asp-for="Product.ProductTypeId" asp-items="Model.ProductTypes" class="form-control">
+            <option value="">-- Select Product Type --</option>
+        </select>
+        <span asp-validation-for="Product.ProductTypeId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Product.ProductTagId" class="control-label"></label>
+        <select asp-for="Product.ProductTagId" asp-items="Model.ProductTags" class="form-control">
+            <option value="">-- Select Product Tag --</option>
+        </select>
+        <span asp-validation-for="Product.ProductTagId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Product.DiscountId" class="control-label"></label>
+        <select asp-for="Product.DiscountId" asp-items="Model.Discounts" class="form-control">
+            <option value="">-- No Discount --</option>
+        </select>
+        <span asp-validation-for="Product.DiscountId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Product.Description" class="control-label"></label>
+        <textarea asp-for="Product.Description" class="form-control" rows="4" style="white-space: pre-wrap;"></textarea>
+        <span asp-validation-for="Product.Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Product.Specification" class="control-label"></label>
+        <textarea asp-for="Product.Specification" class="form-control" rows="4" style="white-space: pre-wrap;"></textarea>
+        <span asp-validation-for="Product.Specification" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

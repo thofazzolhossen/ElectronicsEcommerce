@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Electronics.Application.Product.ProductDto>
+
+@{
+    ViewData["Title"] = "All Products";
+}
+
+<h2>All Products</h2>
+<a asp-action="Create" class="btn btn-primary">Add New Product</a>
+<br />
+<br />
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Images</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Category</th>
+            <th>Sub Category</th>
+            <th>Discount</th>
+            <th >Description</th> <!-- New -->
+            <th>Specification</th> <!-- New -->
+            <th style="width: 150px;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>
+                    @if (product.ImageUrls != null && product.ImageUrls.Any())
+                    {
+                        @foreach (var img in product.ImageUrls)
+                        {
+                            var imageUrl = Url.Content("~/" + img.TrimStart('/'));
+                            <div class="zoom-container">
+                                <img src="@imageUrl" alt="@product.Name"
+                                     class="zoom-image img-thumbnail"
+                                     width="80" height="80"
+                                     data-bs-toggle="modal"
+                                     data-bs-target="#imageModal"
+                                     onclick="document.getElementById('modalImage').src='@imageUrl'" />
+                            </div>
+                        }
+
+
+                    }
+                    else
+                    {
+                        <span>No Images</span>
+                    }
+                </td>
+                <td>@product.Name</td>
+                <td>@product.Price.ToString("C")</td>
+                <td>@product.Quantity</td>
+                <td>@product.ProductTypeName</td>
+                <td>@product.ProductTagName</td>
+                <td>@product.DiscountName</td>
+                <td>
+                    <div title="@product.Description" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px;">
+                        @(product.Description?.Length > 100 ? product.Description.Substring(0, 100) + "..." : product.Description)
+                    </div>
+                </td>
+                <td>
+                    <div title="@product.Specification" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px;">
+                        @(product.Specification?.Length > 100 ? product.Specification.Substring(0, 100) + "..." : product.Specification)
+                    </div>
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img id="modalImage" src="" class="img-fluid" alt="Product Image" />
+            </div>
+        </div>
+    </div>
+</div>
