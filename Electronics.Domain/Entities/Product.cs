@@ -40,5 +40,9 @@ namespace Electronics.Domain.Entities
         [ForeignKey("DiscountId")]
         public Discount? Discount { get; set; }
 
+        [NotMapped]
+        public string? ImagePath { get; set; }
+
+
     }
 }

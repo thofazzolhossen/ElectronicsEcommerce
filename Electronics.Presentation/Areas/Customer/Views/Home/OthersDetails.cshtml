@@ -1,0 +1,196 @@
+﻿@using Electronics.Application.Product
+@model ProductDto
+
+@{
+    ViewData["Title"] = "Product Details";
+    var otherProducts = ViewBag.WithoutSpecificIdTypeProduct as List<ProductDto>;
+}
+
+<div class="container mt-4">
+    <!-- Selected Product -->
+    <style>
+        .image-container {
+            position: relative;
+            width: 450px;
+            height: 450px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+        }
+
+        .zoom-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.2s ease;
+            transform-origin: center;
+        }
+
+        .thumbnail-row img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 1px solid #ccc;
+        }
+
+        .content-toggle {
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 8px;
+            min-height: 100px;
+            margin-top: 15px;
+        }
+
+        .toggle-buttons button {
+            margin-right: 10px;
+        }
+    </style>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-4">
+                @if (Model.ImageUrls != null && Model.ImageUrls.Any())
+                {
+                    var firstImage = Model.ImageUrls.First();
+                    <div class="image-container" onmousemove="zoomImage(event)" onmouseleave="resetZoom()">
+                        <img id="mainImage" src="@Url.Content("~/" + firstImage)" alt="Main Product Image" class="zoom-image" />
+                    </div>
+
+                    <div class="thumbnail-row mt-2 d-flex gap-2">
+                        @foreach (var imageUrl in Model.ImageUrls)
+                        {
+                            <img src="@Url.Content("~/" + imageUrl)" alt="Thumbnail" onclick="changeMainImage(this)" style="width:255px; height:255px" />
+                        }
+                    </div>
+                }
+            </div>
+
+            <div class="col-md-4"></div>
+
+            <div class="col-md-4">
+                <h3>@Model.Name</h3>
+                <p style="font-weight: bold">Single Price: TK @Model.Price</p>
+                <form method="post" asp-action="AddToCart" asp-controller="Cart">
+                    <input type="hidden" name="productId" value="@Model.Id" />
+                    <p style="font-weight: bold" for="quantity">Quantity: </p>
+                    <div class="input-group mb-3" style="max-width: 160px;">
+                        <button class="btn btn-outline-secondary" type="button" onclick="decreaseQuantity()">-</button>
+                        <input type="number" name="quantity" id="quantityInput" class="form-control text-center" value="1" min="1" />
+                        <button class="btn btn-outline-secondary" type="button" onclick="increaseQuantity()">+</button>
+                    </div>
+
+                    <button type="submit" class="btn btn-success mt-3">Add to Cart</button>
+                </form>
+
+            </div>
+        </div>
+
+        <!-- Toggle section -->
+        <div class="row mt-5">
+            <div class="col-md-12 text-center">
+                <div class="toggle-buttons mb-3">
+                    <button type="button"
+                            class="btn btn-outline-primary me-2"
+                            onclick="showContent(this)"
+                            data-content="@Html.Raw(Model.Description.Replace("\n", "<br/>"))">
+                        Product Details
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-outline-secondary"
+                            onclick="showContent(this)"
+                            data-content="@Html.Raw(Model.Specification.Replace("\n", "<br/>"))">
+                        Product Specification
+                    </button>
+                </div>
+
+                <div id="toggleContent" class="mt-2" style="white-space: pre-wrap; text-align: left; padding: 0; margin: 0;">
+                    @Html.Raw(Model.Description.Replace("\n", "<br/>"))
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+
+    @section Scripts {
+        <script>
+            function changeMainImage(thumbnail) {
+                const mainImage = document.getElementById("mainImage");
+                mainImage.src = thumbnail.src;
+            }
+
+            function zoomImage(event) {
+                const image = document.getElementById("mainImage");
+                const container = image.parentElement;
+                const rect = container.getBoundingClientRect();
+
+                const x = (event.clientX - rect.left) / rect.width * 100;
+                const y = (event.clientY - rect.top) / rect.height * 100;
+
+                image.style.transform = "scale(2)";
+                image.style.transformOrigin = `${x}% ${y}%`;
+            }
+
+            function resetZoom() {
+                const image = document.getElementById("mainImage");
+                image.style.transform = "scale(1)";
+                image.style.transformOrigin = "center";
+            }
+
+
+            function showContent(button) {
+                const content = button.getAttribute('data-content');
+                const toggleDiv = document.getElementById('toggleContent');
+                toggleDiv.innerHTML = content; // Use innerHTML to render <br/> tags properly
+            }
+                function increaseQuantity() {
+                var input = document.getElementById("quantityInput");
+                input.value = parseInt(input.value) + 1;
+            }
+
+            function decreaseQuantity() {
+                var input = document.getElementById("quantityInput");
+                if (parseInt(input.value) > 1) {
+                    input.value = parseInt(input.value) - 1;
+                }
+            }
+        </script>
+
+
+    }
+
+    <hr />
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <!-- Other Products (Different Type) -->
+    <h3 class="mb-3">Same Category</h3><br />
+    <div class="row">
+        @if (otherProducts != null && otherProducts.Any())
+        {
+            foreach (var item in otherProducts)
+            {
+                        <div class="col-md-3 mb-4">
+                            <div class="card h-100">
+                        <img src="@Url.Content("~/" + item.ImageUrls.FirstOrDefault())" class="card-img-top" alt="@item.Name" style="width:255px; height:255px" />
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.Name</h5>
+                                    <p class="card-text"><strong>TK: @item.Price</strong></p>
+                                    <a href="@Url.Action("OthersDetails", "Home", new { id = item.Id })" class="btn btn-primary btn-sm">View</a>
+                                </div>
+                            </div>
+                        </div>
+            }
+        }
+        
+    </div>
+</div>

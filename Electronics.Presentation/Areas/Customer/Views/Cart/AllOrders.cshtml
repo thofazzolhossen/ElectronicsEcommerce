@@ -1,0 +1,77 @@
+﻿@model List<Electronics.Domain.Entities.Order>
+@{
+    ViewData["Title"] = "All Orders";
+}
+
+<h2>All Orders</h2>
+
+@foreach (var order in Model)
+{
+    <div style="border: 1px solid #ddd; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <div style="background-color: #007bff; color: white; padding: 10px; display: flex; justify-content: space-between;">
+            <div>
+                <strong>Order No:</strong>
+                <span style="background-color: green; color: white; padding: 2px 5px; border-radius: 5px;">@order.OrderNumber</span><br />
+
+                <strong>Date:</strong> @order.OrderDate.ToString("dd MMM yyyy")
+            </div>
+            <div style="text-align: right;">
+                <strong>Customer:</strong> @order.FirstName @order.LastName<br />
+                <strong>Phone:</strong> @order.PhoneNumber
+            </div>
+        </div>
+        <div style="padding: 15px;">
+            <p><strong>Address:</strong> @order.City, @order.Address</p>
+
+            <!-- Normal HTML table without Bootstrap classes -->
+            <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Product Name</th>
+                        <th>Product ID</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Description</th>
+                        <th>Discount</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in order.OrderDetails.Select((value, index) => new { value, index }))
+                    {
+                        <tr>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.value.Product?.ImagePath))
+                                {
+                                    <img src="~/@item.value.Product.ImagePath" alt="Product Image" width="100" />
+                                }
+                                else
+                                {
+                                    <span>Product Image</span>
+                                }
+                            </td>
+                            <td>@item.value.Product?.Name</td>
+                            <td>@item.value.ProductId</td>
+                            <td>@item.value.Quantity</td>
+                            <td>@item.value.Product?.Price.ToString("0.00")</td>
+                            <td>
+                                <div title="@item.value.Product?.Description" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px;">
+                                    @(item.value.Product?.Description?.Length > 100 ? item.value.Product.Description.Substring(0, 100) + "..." : item.value.Product?.Description)
+                                </div>
+                            </td>
+                            <td>@item.value.Product?.Discount?.Percentage.ToString("0")</td>
+                            <td>
+                                <!-- Done and Cancel buttons -->
+                                <button class="btn btn-success" onclick="markAsDone(@item.value.ProductId)">Done</button>
+                                <button class="btn btn-danger" onclick="markAsCancel(@item.value.ProductId)">Cancel</button>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+}

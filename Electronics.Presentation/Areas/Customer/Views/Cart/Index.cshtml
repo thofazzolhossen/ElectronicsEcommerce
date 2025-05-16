@@ -54,10 +54,11 @@ else
         <div class="col-md-6 text-center">
         </div>
         <div class="col-md-6 text-end">
-            <form method="post" asp-action="ConfirmOrder" asp-controller="Cart" asp-area="Customer">
-                <button type="submit" class="btn btn-primary">Checkout</button>
-            </form>
+            <a asp-action="Checkout" asp-controller="Cart" asp-area="Customer" class="btn btn-primary">
+                Checkout
+            </a>
         </div>
+
     </div>
 
 }

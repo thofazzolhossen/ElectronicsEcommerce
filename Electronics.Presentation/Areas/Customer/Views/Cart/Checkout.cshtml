@@ -1,0 +1,101 @@
+﻿@model Electronics.Domain.Entities.Order
+@{
+    var cart = ViewBag.CartItems as List<Electronics.Application.Product.ProductDto>;
+    ViewBag.Title = "Checkout";
+    decimal grandTotal = 0;
+}
+
+<div class="row">
+    <!-- Left: Order Form -->
+    <div class="col-md-6">
+        <h3>Order Information</h3>
+        <form asp-action="Checkout" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                <label asp-for="FirstName"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LastName"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="City"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Address"></label>
+                <textarea asp-for="Address" class="form-control"></textarea>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <br />
+
+            <div class="form-group text-end">
+                <button type="submit" class="btn btn-success">Place Order</button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Right: Cart Summary -->
+    <div class="col-md-6">
+        <h3>Your Cart</h3>
+        @if (cart != null && cart.Any())
+        {
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Unit Price</th>
+                        <th>Qty</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in cart)
+                    {
+                        var total = item.Price * item.Quantity;
+                        grandTotal += total;
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>৳ @item.Price.ToString("0.00")</td>
+                            <td>@item.Quantity</td>
+                            <td>৳ @total.ToString("0.00")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="text-end">
+                <h4>Grand Total: <span class="text-primary">৳ @grandTotal.ToString("0.00")</span></h4>
+            </div>
+        }
+        else
+        {
+            <p class="text-muted">Your cart is empty.</p>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
