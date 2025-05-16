@@ -18,17 +18,14 @@ public class HomeController : Controller
         
     }
 
-
-
     public async Task<IActionResult> Index()
     {
-        // Fetch all products from the product service
         var products = await _productService.GetAllAsync();
         return View(products);
     }
     public async Task<IActionResult> AllProducts(string? type)
     {
-        var products = await _productService.GetAllAsync(); // Make sure this returns ProductDto list
+        var products = await _productService.GetAllAsync();
 
         if (!string.IsNullOrEmpty(type))
         {
@@ -49,6 +46,25 @@ public class HomeController : Controller
         }
 
         return View(product);
+    }
+    public async Task<IActionResult> OthersDetails(int id)
+    {
+
+        var product = await _productService.GetByIdAsync(id);
+        var allProducts = await _productService.GetAllAsync();
+        if (product == null)
+        {
+            return NotFound();
+        }
+        var withoutSpecificIdTypeProduct = allProducts
+        //p => p.ProductTypeId != product.ProductTypeId
+        .Where(p => p.ProductTypeId == product.ProductTypeId &&  product.Id != p.Id)
+        .ToList();
+
+        ViewBag.WithoutSpecificIdTypeProduct = withoutSpecificIdTypeProduct;
+
+        return View(product);
+
     }
 
 
