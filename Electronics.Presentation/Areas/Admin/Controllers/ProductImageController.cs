@@ -64,7 +64,6 @@ namespace Electronics.Presentation.Areas.Admin.Controllers
             var vms = dtos.Select(dto => new ProductImageVM
             {
                 Id = dto.Id,
-               
                 ProductId = dto.ProductId,
                 ImagePath = dto.ImagePath
             }).ToList();

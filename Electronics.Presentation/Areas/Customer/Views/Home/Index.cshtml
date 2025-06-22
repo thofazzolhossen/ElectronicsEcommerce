@@ -32,11 +32,11 @@
                     {
                         <div class="col-md-3 mb-4 product-card" data-name="@product.Name" data-description="@product.Description">
                             <div class="card">
-                                <img src="@Url.Content("~/" + product.ImageUrls.FirstOrDefault())" class="card-img-top" alt="@product.Name" />
+                                <img src="@Url.Content("~/" + product.ImageUrls.FirstOrDefault())" class="card-img-top" alt="@product.Name" style="width:255px; height:255px" />
                                 <div class="card-body">
                                     <h5 class="card-title">@product.Name</h5>
                                     <p class="card-text"><strong>TK: @product.Price</strong></p>
-                                    <a asp-action="Details" asp-controller="Home" asp-route-id="@product.Id" class="btn btn-primary btn-sm">View</a>
+                                    <a asp-action="OthersDetails" asp-controller="Home" asp-route-id="@product.Id" class="btn btn-primary btn-sm">View</a>
                                 </div>
                             </div>
                         </div>
