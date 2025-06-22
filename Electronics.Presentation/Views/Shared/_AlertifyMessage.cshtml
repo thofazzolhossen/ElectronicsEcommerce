@@ -1,0 +1,57 @@
+﻿@{
+    var success = TempData["Success"] as string;
+    var error = TempData["Error"] as string;
+}
+
+<div id="temp-data-success" data-message="@success"></div>
+<div id="temp-data-error" data-message="@error"></div>
+
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        let successMessage = $('#temp-data-success').data('message');
+        let errorMessage = $('#temp-data-error').data('message');
+
+        alertify.set('notifier', 'position', 'top-right');
+
+        if (successMessage) {
+            alertify.success(successMessage);
+        }
+
+        if (errorMessage) {
+            alertify.error(errorMessage);
+        }
+    });
+</script>
+
+<style>
+    .alertify-notifier .ajs-message {
+        border-radius: 12px;
+        padding: 15px 24px;
+        font-size: 16px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 500;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .alertify-notifier .ajs-success {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .alertify-notifier .ajs-error {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    .alertify-notifier .ajs-message::before {
+        content: "✔️ ";
+        margin-right: 8px;
+    }
+
+    .alertify-notifier .ajs-error::before {
+        content: "❌ ";
+        margin-right: 8px;
+    }
+</style>

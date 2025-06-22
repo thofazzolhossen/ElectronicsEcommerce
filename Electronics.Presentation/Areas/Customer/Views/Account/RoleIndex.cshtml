@@ -1,0 +1,59 @@
+﻿@model List<Microsoft.AspNetCore.Identity.IdentityRole>
+@{
+    ViewData["Title"] = "Roles List";
+}
+<div class="container my-5">
+    <div class="card shadow-lg rounded">
+        <div class="card-header bg-primary text-white text-center">
+            <h2 class="mb-0">Roles List</h2>
+        </div>
+        <div class="card-body">
+            @if (!Model.Any())
+            {
+                <p class="text-center text-muted">No roles found.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>#</th>
+                                <th>Role Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Count; i++)
+                            {
+                                var role = Model[i];
+                                <tr>
+                                    <td>@(i + 1)</td>
+                                    <td>@Model[i].Name</td>
+                                    <td>
+                                        <a asp-action="EditRole" asp-route-id="@role.Id" class="btn btn-sm btn-warning">Edit</a>
+
+                                        @if (role.Name?.ToLower() == "user")
+                                        {
+                                            <button class="btn btn-sm btn-danger" disabled>Delete</button>
+                                        }
+                                        else
+                                        {
+                                            <form asp-action="DeleteConfirmed" asp-route-id="@role.Id" method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-sm btn-danger"
+                                                        onclick="return confirm('Are you sure you want to delete this role?');">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

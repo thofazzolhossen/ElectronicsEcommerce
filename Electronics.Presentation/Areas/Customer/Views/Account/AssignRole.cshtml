@@ -1,0 +1,28 @@
+﻿@model Electronics.Presentation.ViewModels.AssignRoleViewModel
+
+<div class="container my-5">
+    <div class="card shadow-lg rounded">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Assign Role to <strong class="text-black">@Model.Email</strong></h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="AssignRole" method="post">
+                <input type="hidden" asp-for="UserId" />
+
+                <div class="mb-3">
+                    <label asp-for="SelectedRole" class="form-label">Select Role</label>
+                    <select asp-for="SelectedRole" class="form-select" asp-items="new SelectList(Model.Roles)">
+                        <option value="">-- Select Role --</option>
+                    </select>
+                    <span asp-validation-for="SelectedRole" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-success">Assign Role</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_AlertifyMessage")
+}

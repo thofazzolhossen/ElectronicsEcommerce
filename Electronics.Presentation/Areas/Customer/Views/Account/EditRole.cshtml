@@ -1,0 +1,26 @@
+﻿@model Microsoft.AspNetCore.Identity.IdentityRole
+@{
+    ViewData["Title"] = "Edit Role";
+}
+
+<div class="container my-5">
+    <div class="card shadow">
+        <div class="card-header bg-warning text-dark">
+            <h4>Edit Role</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="EditRole" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update Role</button>
+                <a asp-action="RoleList" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+﻿@using Electronics.Presentation.ViewModels;
+@model LoginViewModel;
+
+@{
+    ViewData["Title"] = "Login";
+}
+<div class="account-container d-flex align-items-center justify-content-center min-vh-100 bg-light">
+    <div class="account-box shadow p-4 rounded bg-white" style="min-width: 350px;">
+        <h3 class="text-center mb-4">Login</h3>
+        <form asp-action="Login" method="post" novalidate>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <div class="input-group">
+                    <span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
+                    <input asp-for="Email" class="form-control" placeholder="Enter your email" />
+                </div>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <div class="input-group">
+                    <span class="input-group-text bg-light"><i class="fas fa-lock"></i></span>
+                    <input asp-for="Password" class="form-control" placeholder="Enter your password" type="password" />
+                </div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="form-check">
+                    <input asp-for="RememberMe" class="form-check-input" />
+                    <label class="form-check-label" asp-for="RememberMe">@Html.DisplayNameFor(a => a.RememberMe)</label>
+                </div>
+                <a asp-controller="Account" asp-action="VerifyEmail" class="text-decoration-none small">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100 py-2">
+                <i class="fas fa-sign-in-alt me-1"></i> Login
+            </button>
+
+            <p class="text-center mt-3 small">
+                Don't have an account?
+                <a asp-controller="Account" asp-action="Register" class="text-decoration-none">Register</a>
+            </p>
+
+            <div class="text-center mt-2">
+                <a asp-controller="Home" asp-action="Index" class="text-decoration-none small">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial.cshtml")
+    @await Html.PartialAsync("_AlertifyMessage.cshtml")
+}
+
+

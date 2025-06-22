@@ -1,0 +1,15 @@
+﻿@* _AccessDeniedPartial.cshtml *@
+@{
+    // Optional: allow passing a custom message
+    var message = ViewData["AccessDeniedMessage"] as string ?? "You don't have permission to access this page.";
+}
+
+<div class="d-flex flex-column justify-content-center align-items-center vh-100 bg-light text-center p-4">
+    <div class="p-5 bg-white rounded shadow-sm" style="max-width: 400px; width: 100%;">
+        <h1 class="display-1 text-danger mb-3">403</h1>
+        <h2 class="mb-3">Access Denied</h2>
+        <p class="mb-4 text-muted">@message</p>
+        <a href="~/"
+           class="btn btn-primary btn-lg px-4">Go to Home</a>
+    </div>
+</div>

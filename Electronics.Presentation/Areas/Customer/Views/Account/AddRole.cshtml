@@ -1,0 +1,54 @@
+﻿@model string
+
+@{
+    ViewData["Title"] = "Add Role";
+}
+
+<div class="account-container d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="account-box shadow p-4 rounded-3" style="width: 400px; background: #fff;">
+
+        <h2 class="text-center mb-4 fw-bold text-primary">Add New Role</h2>
+
+        <form asp-action="AddRole" method="post" novalidate>
+            <div class="mb-3">
+                <label for="RoleName" class="form-label fw-semibold">Role Name</label>
+                <input type="text"
+                       name="roleName"
+                       class="form-control form-control-lg border-primary"
+                       placeholder="Enter role name"
+                       required
+                       autofocus />
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg w-100 shadow-sm">
+                <i class="bi bi-plus-circle me-2"></i> Add Role
+            </button>
+        </form>
+        <div class="text-center mt-4">
+            <a asp-controller="Account" asp-action="RoleIndex" class="text-decoration-none text-muted small">
+                <i class="bi bi-arrow-left-circle"></i> Back to Home
+            </a>
+        </div>
+
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert alert-success mt-4 shadow-sm" role="alert">
+                @ViewBag.Message
+            </div>
+        }
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger mt-4 shadow-sm" role="alert">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <p class="mb-0">@error.ErrorMessage</p>
+                }
+            </div>
+        }
+
+    </div>
+</div>
+@section Scripts {
+    @await Html.PartialAsync("_AlertifyMessage")
+}
