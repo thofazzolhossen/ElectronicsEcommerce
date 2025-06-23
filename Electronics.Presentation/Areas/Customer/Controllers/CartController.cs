@@ -80,7 +80,6 @@ namespace Electronics.Presentation.Areas.Customer.Controllers
             _db.Orders.Add(order);
             await _db.SaveChangesAsync();
             HttpContext.Session.Remove("Cart");
-
             return RedirectToAction("Index");
         }
 

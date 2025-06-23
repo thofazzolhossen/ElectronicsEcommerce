@@ -3,19 +3,12 @@
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
 @{
-    // Initialize the count
     int count = 0;
-
-    // Get the cart (list of products) from the session
     List<ProductDto> cart = HttpContextAccessor.HttpContext.Session.Get<List<ProductDto>>("Cart");
-
-    // If the cart is null, initialize it to an empty list
     if (cart == null)
     {
         cart = new List<ProductDto>();
     }
-
-    // Count the total number of products in the cart (including quantity)
     count = cart.Sum(p => p.Quantity);
 }
 
@@ -32,6 +25,36 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="~/Electronics.Presentation.styles.css" asp-append-version="true" />
+    
+    <style>
+        .category-icon {
+            width: 20px;
+            margin-right: 8px;
+        }
+
+        .deal-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #008000;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .carousel-item img {
+            max-height: 300px;
+            object-fit: contain;
+        }
+
+        .product-icon {
+            max-width: 60px;
+            margin: auto;
+        }
+    </style>
+
 </head>
 <body>
     <header>
@@ -63,6 +86,8 @@
             </div>
             <div>
                 <a style="text-decoration:none" href="#" class="text-muted"><h6 style="color:white; text-decoration:none">Sign In</h6></a>
+                <a style="text-decoration:none" href="#" class="text-muted"><h6 style="color:white; text-decoration:none">Register</h6></a>
+                <a style="text-decoration:none" href="#" class="text-muted"><h6 style="color:white; text-decoration:none">Login</h6></a>
             </div>
         </div>
 
@@ -143,6 +168,98 @@
         </nav>
     </header>
 
+    <div class="container-fluid bg-light">
+        <div class="row">
+            <!-- Categories Sidebar -->
+            <div class="col-md-2 bg-white p-3 border-end">
+                <h5>Categories</h5>
+                <ul class="list-unstyled">
+                    <li><img class="category-icon" src="🧥" alt="">Men's Clothing & Fashion</li>
+                    <li><img class="category-icon" src="👗" alt="">Women's Clothing & Fashion</li>
+                    <li><img class="category-icon" src="🧸" alt="">Kids & Toy</li>
+                    <li><img class="category-icon" src="🏕️" alt="">Sports & Outdoor</li>
+                    <li><img class="category-icon" src="💎" alt="">Jewellery & Watch</li>
+                    <li><img class="category-icon" src="🏠" alt="">Home Decoration</li>
+                    <li><img class="category-icon" src="🌸" alt="">Perfume</li>
+                    <li><img class="category-icon" src="🥦" alt="">Grocery</li>
+                    <li><img class="category-icon" src="📱" alt="">Smart Phone & Accessories</li>
+                    <li><img class="category-icon" src="💻" alt="">Computer & Accessories</li>
+                    <li><img class="category-icon" src="📺" alt="">TV & Home Appliance</li>
+                </ul>
+            </div>
+            <div class="col-md-7 p-3">
+                <div id="mainSlider" class="carousel slide mb-3" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="https://i.ibb.co/q7syTf7/banner1.png" class="d-block w-100" alt="Main Banner">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://i.ibb.co/F3gzx6d/banner2.png" class="d-block w-100" alt="Main Banner 2">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#mainSlider" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#mainSlider" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+
+                <div class="d-flex flex-wrap justify-content-around text-center">
+                    <div><img class="product-icon" src="https://i.ibb.co/DzfqxyF/dress.png" alt=""><p>Women's Dress</p></div>
+                    <div><img class="product-icon" src="https://i.ibb.co/BNtpJ77/jacket.png" alt=""><p>Men's Jacket</p></div>
+                    <div><img class="product-icon" src="https://i.ibb.co/nDhKdLf/phone.png" alt=""><p>Smartphone</p></div>
+                    <div><img class="product-icon" src="https://i.ibb.co/wg1n6P2/pc.png" alt=""><p>PC</p></div>
+                    <div><img class="product-icon" src="https://i.ibb.co/nL5FbV0/tv.png" alt=""><p>TV</p></div>
+                    <div><img class="product-icon" src="https://i.ibb.co/yY3rrLM/toy.png" alt=""><p>Toys</p></div>
+                </div>
+            </div>
+
+            <!-- Today's Deal -->
+            <div class="col-md-3 p-3 bg-dark text-white">
+                <h6 class="mb-3">Today's Deal <span class="badge bg-danger">Hot</span></h6>
+
+                <div class="card mb-2" style="height: 120px;">
+                    <div class="row g-0 h-100">
+                        <div class="col-4">
+                            <img src="https://i.ibb.co/JxWcY3m/deal1.jpg" class="img-fluid h-100" style="object-fit: cover;" alt="Deal 1">
+                        </div>
+                        <div class="col-8">
+                            <div class="card-body p-2">
+                                <p class="deal-price mb-1 fs-6 text-success">৳600.00</p>
+                                <p class="old-price mb-0 fs-6">৳650.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-2" style="height: 120px;">
+                    <div class="row g-0 h-100">
+                        <div class="col-4">
+                            <img src="https://i.ibb.co/hHzDc3L/deal2.jpg" class="img-fluid h-80" style="object-fit: cover;" alt="Deal 2">
+                        </div>
+                        <div class="col-8">
+                            <div class="card-body p-2">
+                                <p class="deal-price mb-1 fs-6 text-success">৳1,400.00</p>
+                                <p class="old-price mb-0 fs-6">৳1,500.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Banners -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <img src="https://i.ibb.co/YQ1pZBc/banner-bottom-left.jpg" class="img-fluid" alt="Fashion Offer">
+            </div>
+            <div class="col-md-6">
+                <img src="https://i.ibb.co/nCr7jcs/banner-bottom-right.jpg" class="img-fluid" alt="Winter Fest">
+            </div>
+        </div>
+    </div>
 
     <div class="container">
         <main role="main" class="pb-3">
