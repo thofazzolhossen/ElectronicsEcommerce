@@ -1,11 +1,5 @@
 ﻿using Electronics.Application.Interface;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Electronics.Infrastructure
 {
@@ -45,8 +39,6 @@ namespace Electronics.Infrastructure
                 await _context.SaveChangesAsync();
             }
         }
-
-
 
     }
 }
