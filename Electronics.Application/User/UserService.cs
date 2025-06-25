@@ -23,5 +23,9 @@ namespace Electronics.Application.User
                 Email = user.Email
             }).ToList();
         }
+        public async Task<bool> CreateUserAsync(CreateUserDto dto)
+        {
+            return await _userRepository.CreateUserAsync(dto);
+        }
     }
 }

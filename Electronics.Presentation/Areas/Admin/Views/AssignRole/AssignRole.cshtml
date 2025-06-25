@@ -1,0 +1,52 @@
+﻿@model Electronics.Presentation.Areas.Admin.Views.AssignRole.AssignRoleViewModel
+
+@{
+    ViewData["Title"] = "Assign Role to Users";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>User Name</th>
+            <th>Assign Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.Text</td>
+                <td>
+                    <form asp-action="AssignRole" method="post" class="d-flex align-items-center">
+                        <input type="hidden" name="SelectedUserId" value="@user.Value" />
+                        <select name="SelectedRole" class="form-select me-2" required>
+                            <option value="">-- Select Role --</option>
+                            @foreach (var role in Model.Roles)
+                            {
+                                <option value="@role.Value">@role.Text</option>
+                            }
+                        </select>
+                        <button type="submit" class="btn btn-primary btn-sm">Assign</button>
+                    </form>
+                </td>
+            
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

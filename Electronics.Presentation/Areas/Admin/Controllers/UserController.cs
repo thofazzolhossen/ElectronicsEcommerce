@@ -24,5 +24,34 @@ namespace Electronics.Presentation.Areas.Admin.Controllers
 
             return View(viewModel);
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(CreateUserViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var dto = new CreateUserDto
+            {
+                FullName = model.FullName,
+                UserName = model.UserName,
+                Email = model.Email,
+                PhoneNumber = model.PhoneNumber,
+                Password = model.Password
+            };
+
+            var success = await _userService.CreateUserAsync(dto);
+            if (success)
+                return RedirectToAction("Index");
+
+            ModelState.AddModelError("", "User creation failed.");
+            return View(model);
+        }
+
     }
 }

@@ -1,9 +1,11 @@
+using Electronics.Application.AssignRole;
 using Electronics.Application.Discount;
 using Electronics.Application.Interface;
 using Electronics.Application.Product;
 using Electronics.Application.ProductImage;
 using Electronics.Application.ProductTag;
 using Electronics.Application.ProductType;
+using Electronics.Application.Role;
 using Electronics.Application.User;
 using Electronics.Domain.Entities;
 using Electronics.Infrastructure;
@@ -22,17 +24,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Identity Configuration
 builder.Services.AddIdentity<ApplicationUser, Microsoft.AspNetCore.Identity.IdentityRole>(options =>
 {
-    options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true;
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 4;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
-    options.Password.RequiredLength = 6;
-
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-    options.Lockout.MaxFailedAccessAttempts = 5;
-    options.Lockout.AllowedForNewUsers = true;
-
-    options.User.RequireUniqueEmail = true;
+    options.Password.RequireLowercase = false;
 })
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
@@ -45,6 +41,11 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductImageService, ProductImageService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+builder.Services.AddScoped<IUserRoleService, UserRoleService>();
+
 
 
 
