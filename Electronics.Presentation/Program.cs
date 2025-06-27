@@ -1,4 +1,5 @@
 using Electronics.Application.AssignRole;
+using Electronics.Application.Auth;
 using Electronics.Application.Discount;
 using Electronics.Application.Interface;
 using Electronics.Application.Product;
@@ -45,7 +46,7 @@ builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 builder.Services.AddScoped<IUserRoleService, UserRoleService>();
-
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 
 

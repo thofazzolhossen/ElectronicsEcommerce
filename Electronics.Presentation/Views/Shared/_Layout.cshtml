@@ -48,36 +48,13 @@
             max-height: 300px;
             object-fit: contain;
         }
-
         .product-icon {
             max-width: 60px;
             margin: auto;
         }
     </style>
-
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Electronics.Presentation</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
     <header class="bg-light py-1">
         <div  class="navbar navbar-expand-lg container-fluid d-flex justify-content-between align-items-center large text-muted bg-primary">
             <div>
@@ -85,9 +62,21 @@
                 <i style="color:white" class="fa fa-envelope"></i> <h6 style="color:white" class="d-inline mx-3">support@robodocbd.com</h6>
             </div>
             <div>
-                <a style="text-decoration:none" href="#" class="text-muted"><h6 style="color:white; text-decoration:none">Sign In</h6></a>
-                <a style="text-decoration:none" href="#" class="text-muted"><h6 style="color:white; text-decoration:none">Register</h6></a>
-                <a style="text-decoration:none" href="#" class="text-muted"><h6 style="color:white; text-decoration:none">Login</h6></a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <span class="text-white me-2">👤 @User.Identity.Name</span>
+                    <form asp-area="Admin" asp-controller="Auth" asp-action="Logout" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-link text-white" style="text-decoration: none;">Logout</button>
+                    </form>
+                }
+                else
+                {
+                    <a asp-area="Admin" asp-controller="Auth" asp-action="Login" class="text-muted" style="text-decoration:none">
+                        <h6 style="color:white;">Login</h6>
+                    </a>
+                }
+
+
             </div>
         </div>
 
@@ -137,9 +126,11 @@
                     </ul>
                 </li>
                 <li class="nav-item dropdown me-5">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Robotics</a>
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Identity</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Robot 1</a></li>
+                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Index">User</a></li>
+                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Role" asp-action="Index">Role</a></li>
+                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="AssignRole" asp-action="AssignRole">AssignRole</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown me-5">
