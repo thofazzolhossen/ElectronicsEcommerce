@@ -1,10 +1,12 @@
 ﻿using Electronics.Application.ProductType;
 using Electronics.Presentation.Areas.Admin.Views.ProductType;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Electronics.Presentation.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class ProductTypeController : Controller
     {
         private readonly IProductTypeService _service;

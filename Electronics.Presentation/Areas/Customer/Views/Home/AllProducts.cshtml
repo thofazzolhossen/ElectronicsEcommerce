@@ -2,8 +2,9 @@
 
 @{
     ViewData["Title"] = "All Products";
+    var type = ViewBag.FilteredType as string;
+    var otherProducts = ViewBag.OtherProducts as List<Electronics.Application.Product.ProductDto>;
     var grouped = Model.GroupBy(p => p.ProductTypeName);
-    var allProducts = Model.ToList();
 }
 
 <div class="container mt-4">
@@ -14,18 +15,17 @@
         </div>
     </div>
 
-    <!-- Grouped Products -->
+    <!-- Grouped Filtered Products -->
     <div id="productCards">
-        @foreach (var group in grouped)
+        @if (!string.IsNullOrEmpty(type))
         {
             <div class="mt-4">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h4>@group.Key</h4>
-                    <a href="@Url.Action("GroupProducts", "Home", new { type = group.Key })" class="btn btn-outline-primary btn-sm">More</a>
+                    <h4>@type Products</h4>
                 </div>
                 <hr />
                 <div class="row">
-                    @foreach (var product in group)
+                    @foreach (var product in Model)
                     {
                         <div class="col-md-3 mb-4 product-card" data-name="@product.Name" data-description="@product.Description">
                             <div class="card">
@@ -41,33 +41,65 @@
                 </div>
             </div>
         }
-    </div>
-    <hr />
-
-    <!-- here i want to see others product -->
-    <div id="othersProducts">
-        <div class="row">
-            @foreach (var product in allProducts)
+        else
+        {
+            <!-- No filter, show grouped -->
+            @foreach (var group in grouped)
             {
-                <div class="col-md-3 mb-4 product-card" data-name="@product.Name" data-description="@product.Description">
-                    <div class="card">
-                        <img src="@Url.Content("~/" + product.ImageUrls.FirstOrDefault())" class="card-img-top" />
-                        <div class="card-body">
-                            <h5 class="card-title">@product.Name</h5>
-                            <p class="card-text">TK: @product.Price</p>
-                            <a asp-action="Details" asp-controller="Home" asp-route-id="@product.Id" class="btn btn-primary btn-sm ">View</a>
-                        </div>
+                <div class="mt-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4>@group.Key</h4>
+                        <a href="@Url.Action("AllProducts", "Home", new { type = group.Key })" class="btn btn-outline-primary btn-sm">More</a>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        @foreach (var product in group)
+                        {
+                            <div class="col-md-3 mb-4 product-card" data-name="@product.Name" data-description="@product.Description">
+                                <div class="card">
+                                    <img src="@Url.Content("~/" + product.ImageUrls.FirstOrDefault())" class="card-img-top" />
+                                    <div class="card-body">
+                                        <h5 class="card-title">@product.Name</h5>
+                                        <p class="card-text">TK: @product.Price</p>
+                                        <a asp-action="Details" asp-controller="Home" asp-route-id="@product.Id" class="btn btn-primary btn-sm">View</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
             }
+        }
+    </div>
+
+    <!-- Other Products Section -->
+    @if (!string.IsNullOrEmpty(type) && otherProducts?.Any() == true)
+    {
+        <hr />
+        <h4>Other Products</h4>
+        <div id="othersProducts">
+            <div class="row">
+                @foreach (var product in otherProducts)
+                {
+                    <div class="col-md-3 mb-4 product-card" data-name="@product.Name" data-description="@product.Description">
+                        <div class="card">
+                            <img src="@Url.Content("~/" + product.ImageUrls.FirstOrDefault())" class="card-img-top" />
+                            <div class="card-body">
+                                <h5 class="card-title">@product.Name</h5>
+                                <p class="card-text">TK: @product.Price</p>
+                                <a asp-action="Details" asp-controller="Home" asp-route-id="@product.Id" class="btn btn-primary btn-sm">View</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
-    </div>
+    }
 </div>
-<div>
-    <!-- No results -->
-    <div id="noResults" class="text-center mt-4" style="display:none;">
-        <p class="text-muted">No products found.</p>
-    </div>
+
+<!-- No results message -->
+<div id="noResults" class="text-center mt-4" style="display:none;">
+    <p class="text-muted">No products found.</p>
 </div>
 
 @section scripts {
@@ -78,8 +110,8 @@
                 let hasResults = false;
 
                 $('.product-card').each(function () {
-                    let name = $(this).data('name').toLowerCase();
-                    let desc = $(this).data('description').toLowerCase();
+                    let name = $(this).data('name')?.toLowerCase() || '';
+                    let desc = $(this).data('description')?.toLowerCase() || '';
                     let matched = name.includes(value) || desc.includes(value);
                     $(this).toggle(matched);
                     if (matched) hasResults = true;

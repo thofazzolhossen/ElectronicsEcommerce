@@ -1,14 +1,16 @@
 ﻿using Electronics.Application.AssignRole;
 using Electronics.Presentation.Areas.Admin.Views.AssignRole;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Electronics.Presentation.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class AssignRoleController : Controller
     {
-        private readonly IUserRoleService _service;
+        private readonly IUserRoleService _service;     
 
         public AssignRoleController(IUserRoleService service)
         {

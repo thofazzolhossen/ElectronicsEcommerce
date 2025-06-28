@@ -1,12 +1,14 @@
 ﻿using Electronics.Application.Product;
 using Electronics.Application.ProductImage;
 using Electronics.Presentation.Areas.Admin.Views.ProductImage;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Electronics.Presentation.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class ProductImageController : Controller
     {
         private readonly IProductImageService _service;

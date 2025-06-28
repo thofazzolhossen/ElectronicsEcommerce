@@ -1,10 +1,12 @@
 ﻿using Electronics.Application.ProductTag;
 using Electronics.Presentation.Areas.Admin.Views.ProductTag;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Electronics.Presentation.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class ProductTagController : Controller
     {
         private readonly IProductTagService _service;

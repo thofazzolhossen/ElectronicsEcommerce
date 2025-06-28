@@ -1,9 +1,11 @@
 ﻿using Electronics.Application.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Electronics.Presentation.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;

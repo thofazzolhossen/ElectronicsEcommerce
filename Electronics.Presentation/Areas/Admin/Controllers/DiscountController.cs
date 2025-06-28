@@ -1,11 +1,13 @@
 ﻿using Electronics.Application.Discount;
 using Electronics.Application.ProductType;
 using Electronics.Presentation.Areas.Admin.Views.Discount;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Electronics.Presentation.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class DiscountController : Controller
     {
         private readonly IDiscountService _service;

@@ -1,10 +1,12 @@
 ﻿using Electronics.Application.Role;
 using Electronics.Presentation.Areas.Admin.Views.Role;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Electronics.Presentation.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class RoleController : Controller
     {
         private readonly IRoleService _service;

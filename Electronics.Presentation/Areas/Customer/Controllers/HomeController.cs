@@ -25,31 +25,50 @@ public class HomeController : Controller
     }
     public async Task<IActionResult> AllProducts(string? type)
     {
-        var products = await _productService.GetAllAsync();
+        var allProducts = await _productService.GetAllAsync();
+
+        List<ProductDto> filteredProducts = allProducts.ToList();
+        List<ProductDto> otherProducts = new();
 
         if (!string.IsNullOrEmpty(type))
         {
-            products = products.Where(p => p.ProductTypeName == type).ToList();
+            filteredProducts = allProducts
+                .Where(p => p.ProductTypeName == type)
+                .ToList();
+
+            otherProducts = allProducts
+                .Where(p => p.ProductTypeName != type)
+                .ToList();
+
             ViewBag.FilteredType = type;
         }
 
-        return View(products);
+        ViewBag.OtherProducts = otherProducts;
+
+        return View(filteredProducts); // return only the filtered list as model
     }
+
 
     public async Task<IActionResult> Details(int id)
     {
-        
         var product = await _productService.GetByIdAsync(id);
         if (product == null)
         {
             return NotFound();
         }
 
+        var allProducts = await _productService.GetAllAsync();
+        var similarProducts = allProducts
+            .Where(p => p.ProductTypeId == product.ProductTypeId && p.Id != product.Id)
+            .ToList();
+
+        ViewBag.SimilarProducts = similarProducts;
+
         return View(product);
     }
+
     public async Task<IActionResult> OthersDetails(int id)
     {
-
         var product = await _productService.GetByIdAsync(id);
         var allProducts = await _productService.GetAllAsync();
         if (product == null)
@@ -57,12 +76,9 @@ public class HomeController : Controller
             return NotFound();
         }
         var withoutSpecificIdTypeProduct = allProducts
-        //p => p.ProductTypeId != product.ProductTypeId
-        .Where(p => p.ProductTypeId == product.ProductTypeId &&  product.Id != p.Id)
-        .ToList();
-
+            .Where(p => p.ProductTypeId == product.ProductTypeId &&  product.Id != p.Id)
+            .ToList();
         ViewBag.WithoutSpecificIdTypeProduct = withoutSpecificIdTypeProduct;
-
         return View(product);
 
     }

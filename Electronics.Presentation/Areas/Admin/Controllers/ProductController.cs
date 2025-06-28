@@ -5,8 +5,10 @@ using Electronics.Application.Discount;
 using Electronics.Presentation.Areas.Admin.Views.Product;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 [Area("Admin")]
+[Authorize(Roles = "Admin")]
 public class ProductController : Controller
 {
     private readonly IProductService _service;
