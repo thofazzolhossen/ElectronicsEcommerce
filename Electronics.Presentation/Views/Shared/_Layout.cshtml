@@ -17,8 +17,6 @@
 }
 
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,23 +57,6 @@
     </style>
 </head>
 <body>
-    @* @if (User.Identity.IsAuthenticated)
-    {
-        <p>Hello @User.Identity.Name</p>
-
-        @if (User.IsInRole("Admin"))
-        {
-            <p>You are an Admin</p>
-        }
-        else
-        {
-            <p>You are NOT an Admin</p>
-        }
-    }
-    else
-    {
-        <p>You are not logged in.</p>
-    } *@
     <header class="bg-light py-1">
         <div  class="navbar navbar-expand-lg container-fluid d-flex justify-content-between align-items-center large text-muted bg-primary">
             <div>
@@ -184,6 +165,145 @@
         </nav>
     </header>
 
+    <header>
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="container top-bar-content">
+                <div class="contact-info">
+                    <i class="fa fa-phone"></i>
+                    <a href="https://wa.me/8801712511701" target="_blank" class="d-inline-flex align-items-center text-decoration-none text-black">
+                        <span>(+88) 01712 511 701</span>
+                    </a>
+                    <i class="fa fa-envelope"></i>
+                    <a href="service.techhutbd@gmail.com" class="contact-text text-decoration-none text-black">
+                        service.techhutbd@gmail.com
+                    </a>
+
+                </div>
+                <a href="#" class="sign-in">Sign In</a>
+            </div>
+        </div>
+        <!-- Main Nav -->
+        <div class="main-nav">
+            <div class="container nav-content">
+                <div class="nav-left">
+                    <button class="hamburger" id="hamburgerBtn">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <!-- <img src="logo-vertical.webp" alt="RoboDoc Logo" class="logo"> -->
+                    <span class="brand"> <img src="logo-vertical.webp" alt="TechHutBD"></span>
+                </div>
+                <form class="search-bar" id="searchForm">
+                    <input type="text" placeholder="Search anything...">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="nav-icons">
+                        <div class="d-flex align-items-center">
+                            <a href="#" class="icon-btn me-1" title="Profile">
+                                <i class="fa fa-user"></i>
+                            </a>
+                            <span class="text-black">
+                                @((User.Identity.Name?.Length >= 5 ? User.Identity.Name.Substring(0, 5) : User.Identity.Name) + "..")
+                            </span>
+                        </div>
+
+
+                        <a href="#" class="icon-btn" title="Wishlist"><i class="fa fa-heart"></i></a>
+                        <a href="@Url.Action("Index", "Cart", new { area = "Customer" })" class="icon-btn position-relative" title="Cart">
+                            <i class="fa fa-shopping-cart"></i>
+                            <span style="color:#19c37d" id="cartCount" class="badge position-absolute top-0 start-100 translate-middle">
+                                @count
+                            </span>
+                        </a>
+
+                        <form asp-area="Admin" asp-controller="Auth" asp-action="Logout" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-link text-white" style="text-decoration: none;">Logout</button>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <div class="nav-icons">
+                        <!-- Register Button -->
+                        <a asp-area="Admin" asp-controller="Auth" asp-action="Register" class="icon-btn" title="Register" style="color:#19c37d">
+                            <i class="fa fa-user-plus"></i>
+                        </a>
+
+                        <!-- Login Button -->
+                        <a asp-area="Admin" asp-controller="Auth" asp-action="Login" class="icon-btn" title="Login" style="color:#19c37d">
+                            <i class="fa fa-sign-in"></i>
+                        </a>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </header>
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <nav class="menu-bar" id="menuBar">
+        <button class="close-menu" id="closeMenuBtn" aria-label="Close Menu">
+            <i class="fa fa-times"></i>
+        </button>
+        <button class="sign-in" id="">
+            <a href="#">sign-in</a>
+        </button>
+        <ul class="menu-list">
+            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                <li class="menu-item dropdown">
+                    Admin<i class="fa fa-chevron-down" style="color:#19c37d"></i>
+                    <ul class="submenu">
+                        <li><a asp-area="Admin" asp-controller="ProductImage" asp-action="Index">Product Image</a></li>
+                        <li><a asp-area="Admin" asp-controller="ProductType" asp-action="Index">Product Type</a></li>
+                        <li><a asp-area="Admin" asp-controller="ProductTag" asp-action="Index">Product Tag</a></li>
+                        <li><a asp-area="Admin" asp-controller="Discount" asp-action="Index">Discount</a></li>
+                        <li><a asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a></li>
+                        <li><a asp-area="Customer" asp-controller="Cart" asp-action="AllOrders">AllOrder</a></li>
+                    </ul>
+                </li>
+            }
+            <li class="menu-item dropdown">
+                Robotics <i class="fa fa-chevron-down submenu-toggle"></i>
+                <ul class="submenu">
+                    <li>Robot Arms</li>
+                    <li>Wheeled Robots</li>
+                </ul>
+            </li>
+            <li class="menu-item dropdown">
+                Components <i class="fa fa-chevron-down submenu-toggle"></i>
+                <ul class="submenu">
+                    <li>Microcontrollers</li>
+                    <li>Motors</li>
+                </ul>
+            </li>
+            <li class="menu-item dropdown">
+                Sensors <i class="fa fa-chevron-down submenu-toggle"></i>
+                <ul class="submenu">
+                    <li>Temperature Sensors</li>
+                    <li>Distance Sensors</li>
+                </ul>
+            </li>
+            <li class="menu-item">
+                Innovation Kit
+                <ul class="submenu">
+                    <li>Starter Kit</li>
+                    <li>Advanced Kit</li>
+                </ul>
+            </li>
+            <li class="menu-item">
+                Gadgets & Electronics
+                <ul class="submenu">
+                    <li>Wearables</li>
+                    <li>Smart Home</li>
+                </ul>
+            </li>
+            <li class="menu-item offers"><i class="fa fa-gift"></i> Offers</li>
+        </ul>
+    </nav>
+
+
  @*    <div class="container-fluid bg-light">
         <div class="row">
             <!-- Categories Sidebar -->
@@ -282,12 +402,18 @@
             </div>
         </div>
     </div> *@
-
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div style="
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    min-height: 100vh;
+    padding: 20px;
+">
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
     </div>
+
 
     <footer class="border-top footer text-muted">
         <div class="container">
@@ -300,3 +426,44 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+
+
+    <script>
+          document.addEventListener('DOMContentLoaded', function() {
+      const hamburger = document.getElementById('hamburgerBtn');
+      const menuBar = document.getElementById('menuBar');
+      const menuOverlay = document.getElementById('menuOverlay');
+      const closeMenuBtn = document.getElementById('closeMenuBtn');
+
+      function openMenu() {
+        menuBar.classList.add('active');
+        menuOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeMenu() {
+        menuBar.classList.remove('active');
+        menuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      hamburger.addEventListener('click', openMenu);
+      closeMenuBtn.addEventListener('click', closeMenu);
+      menuOverlay.addEventListener('click', closeMenu);
+
+      // Only toggle submenu when clicking the .submenu-toggle icon
+      const submenuToggles = document.querySelectorAll('.submenu-toggle');
+      submenuToggles.forEach(function(toggle) {
+        toggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const menuItem = this.closest('.menu-item');
+          // Close other open submenus
+          document.querySelectorAll('.menu-item.open').forEach(function(item) {
+            if (item !== menuItem) item.classList.remove('open');
+          });
+          menuItem.classList.toggle('open');
+        });
+      });
+    });
+
+    </script>

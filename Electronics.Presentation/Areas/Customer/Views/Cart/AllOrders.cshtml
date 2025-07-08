@@ -63,8 +63,16 @@
                             <td>@item.value.Product?.Discount?.Percentage.ToString("0")</td>
                             <td>
                                 <!-- Done and Cancel buttons -->
-                                <button class="btn btn-success" onclick="markAsDone(@item.value.ProductId)">Done</button>
-                                <button class="btn btn-danger" onclick="markAsCancel(@item.value.ProductId)">Cancel</button>
+                                <form asp-area="Customer" asp-controller="Cart" asp-action="MarkAsDone" method="post" style="display:inline;">
+                                    <input type="hidden" name="productId" value="@item.value.ProductId" />
+                                    <button type="submit" class="btn btn-success">Done</button>
+                                </form>
+                                <form asp-area="Customer" asp-controller="Cart" asp-action="MarkAsCancel" method="post" style="display:inline; margin-left: 10px;">
+                                    <input type="hidden" name="productId" value="@item.value.ProductId" />
+                                    <button type="submit" class="btn btn-danger">Cancel</button>
+                                </form>
+
+
                             </td>
                         </tr>
                     }

@@ -12,11 +12,13 @@ using Electronics.Domain.Entities;
 using Electronics.Infrastructure;
 using Electronics.Infrastructure.Repository;
 using Electronics.Infrastructure.Services;
+using Electronics.Presentation.Utility;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddTransient<EmailService>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>

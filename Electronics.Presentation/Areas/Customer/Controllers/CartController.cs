@@ -14,11 +14,13 @@ namespace Electronics.Presentation.Areas.Customer.Controllers
         private readonly IProductService _productService;
         private readonly AppDbContext _db;
         private readonly IProductImageService _productImageService;
-        public CartController(IProductService productService, AppDbContext db, IProductImageService productImageService)
+        private readonly EmailService _emailService;
+        public CartController(IProductService productService, AppDbContext db, IProductImageService productImageService, EmailService emailService)
         {
             _productService = productService;
             _db = db;
             _productImageService = productImageService;
+            _emailService = emailService;
         }
         [HttpPost]
         public async Task<IActionResult> AddToCart(int productId, int quantity)
@@ -122,7 +124,7 @@ namespace Electronics.Presentation.Areas.Customer.Controllers
                         var match = cart.FirstOrDefault(c => c.Id == detail.ProductId);
                         if (match != null)
                         {
-                            detail.Quantity = match.Quantity; // ✅ Add quantity from cart if available
+                            detail.Quantity = match.Quantity;
                         }
                     }
                 }
@@ -130,6 +132,258 @@ namespace Electronics.Presentation.Areas.Customer.Controllers
 
             return View(orders);
         }
+        [HttpPost]
+        public async Task<IActionResult> MarkAsDone(int productId)
+        {
+            // Step 1: Find the OrderDetail and include Order
+            var orderDetail = await _db.OrderDetails
+                .Include(od => od.Order)
+                .FirstOrDefaultAsync(od => od.ProductId == productId);
+
+            if (orderDetail == null)
+                return NotFound();
+
+            // Step 2: Load the full Order with all OrderDetails and Products
+            var order = await _db.Orders
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Product)
+                .FirstOrDefaultAsync(o => o.Id == orderDetail.OrderId);
+
+            if (order == null || string.IsNullOrEmpty(order.Email))
+                return BadRequest("Order or Email not found.");
+
+            // Step 3: Build Email Body
+            string subject = "Order Completed";
+            string body = $@"
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <title>Order Completed</title>
+    <style>
+        body {{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }}
+        .container {{
+            max-width: 600px;
+            margin: auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }}
+        .header {{
+            background-color: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 6px 6px 0 0;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+        }}
+        .table {{
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }}
+        .table th, .table td {{
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            text-align: left;
+        }}
+        .table th {{
+            background-color: #f1f1f1;
+        }}
+        .footer {{
+            margin-top: 30px;
+            font-size: 14px;
+            color: #6c757d;
+            text-align: center;
+        }}
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='header'>🎉 Order Completed Successfully!</div>
+        <p>Dear <strong>{order.FirstName}</strong>,</p>
+        <p>Your order has been <span style='color:green;'>successfully completed</span>.</p>
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Price (৳)</th>
+                </tr>
+            </thead>
+            <tbody>";
+
+            // Step 4: Loop through OrderDetails to add rows
+            foreach (var item in order.OrderDetails)
+            {
+                body += $@"
+                <tr>
+                    <td>{item.Product?.Name}</td>
+                    <td>{item.Quantity}</td>
+                    <td>{item.Product?.Price.ToString("0.00")}</td>
+                </tr>";
+            }
+
+            // Step 5: Close HTML
+            body += @"
+            </tbody>
+        </table>
+        <p style='margin-top: 20px;'>We appreciate your trust in us. 🌟<br>
+        Stay tuned for exciting new deals and products!</p>
+
+        <p>Warm regards,<br><strong>TechHutBD.com</strong></p>
+
+        <div class='footer'>
+            Need help? Contact our support team anytime.<br />
+            📧 techhutbd.com@gmail.com | 📞 01712-511701
+        </div>
+    </div>
+</body>
+</html>";
+
+            // Step 6: Send Email
+            await _emailService.SendEmailAsync(order.Email, subject, body);
+            
+            _db.OrderDetails.RemoveRange(order.OrderDetails);
+            _db.Orders.Remove(order);
+            await _db.SaveChangesAsync();
+
+            TempData["Success"] = "Order marked as done and email sent successfully.";
+            return RedirectToAction("AllOrders");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MarkAsCancel(int productId)
+        {
+            // অর্ডার ডিটেইল নিয়ে আসা
+            var orderDetail = await _db.OrderDetails
+                .Include(od => od.Order)
+                .FirstOrDefaultAsync(od => od.ProductId == productId);
+
+            if (orderDetail == null)
+                return NotFound();
+
+            // পুরো অর্ডার লোড করা (OrderDetails ও Products সহ)
+            var order = await _db.Orders
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Product)
+                .FirstOrDefaultAsync(o => o.Id == orderDetail.OrderId);
+
+            if (order == null || string.IsNullOrEmpty(order.Email))
+                return BadRequest("Order or Email not found.");
+
+            // মেইল তৈরি করা
+            string subject = "Order Cancelled";
+            string body = $@"
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <title>Order Cancelled</title>
+    <style>
+        body {{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fff0f0;
+            padding: 20px;
+        }}
+        .container {{
+            max-width: 600px;
+            margin: auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #f5c6cb;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+        }}
+        .header {{
+            background-color: #dc3545;
+            color: white;
+            padding: 15px;
+            border-radius: 6px 6px 0 0;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+        }}
+        .table {{
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }}
+        .table th, .table td {{
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            text-align: left;
+        }}
+        .table th {{
+            background-color: #f8d7da;
+        }}
+        .footer {{
+            margin-top: 30px;
+            font-size: 14px;
+            color: #6c757d;
+            text-align: center;
+        }}
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='header'>❌ Order Cancelled</div>
+        <p>Dear <strong>{order.FirstName}</strong>,</p>
+        <p>We regret to inform you that your order <strong>#{order.OrderNumber}</strong> has been <span style='color:red;'>cancelled</span>.</p>
+        <p>If you have any questions, please contact our support team.</p>
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Price (৳)</th>
+                </tr>
+            </thead>
+            <tbody>";
+
+            foreach (var item in order.OrderDetails)
+            {
+                body += $@"
+                <tr>
+                    <td>{item.Product?.Name}</td>
+                    <td>{item.Quantity}</td>
+                    <td>{item.Product?.Price.ToString("0.00")}</td>
+                </tr>";
+            }
+
+            body += @"
+            </tbody>
+        </table>
+
+        <p style='margin-top: 20px;'>Thank you for understanding.<br>
+        We hope to serve you better in the future.</p>
+
+        <p>Best regards,<br><strong>TechHutBD.com</strong></p>
+
+        <div class='footer'>
+            Need help? Contact our support team anytime.<br />
+            📧 techhutbd.com@gmail.com | 📞 01712-511701
+        </div>
+    </div>
+</body>
+</html>";
+
+            await _emailService.SendEmailAsync(order.Email, subject, body);
+            _db.OrderDetails.RemoveRange(order.OrderDetails);
+            _db.Orders.Remove(order);
+            await _db.SaveChangesAsync();
+
+            TempData["Success"] = "Order cancelled and email sent successfully.";
+            return RedirectToAction("AllOrders");
+        }
+
 
 
 
