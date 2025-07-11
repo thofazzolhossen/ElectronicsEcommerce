@@ -20,7 +20,7 @@
             <div class="product-group">
                 <div class="d-flex justify-content-between align-items-center mt-4">
                     <h4 class="mb-0">@group.Key</h4>
-                    <a asp-action="AllProducts" asp-controller="Home" asp-route-type="@group.Key" class="btn btn-outline-primary btn-sm">More</a>
+                    <a asp-action="AllProducts" asp-controller="Home" asp-route-type="@group.Key" class="btn btn-outline-black btn-sm" style="border: 1px solid #19c37d;">More</a>
                 </div>
                 <hr />
 
@@ -31,12 +31,12 @@
                     @foreach (var product in limitedProducts)
                     {
                         <div class="col-md-3 mb-4 product-card" data-name="@product.Name" data-description="@product.Description">
-                            <div class="card">
-                                <img src="@Url.Content("~/" + product.ImageUrls.FirstOrDefault())" class="card-img-top" alt="@product.Name" style="width:255px; height:255px" />
+                            <div class="card" style="border: 1px solid #19c37d;">
+                                <img src="@Url.Content("~/" + product.ImageUrls.FirstOrDefault())" class="card-img-top img-fluid" alt="@product.Name" style="height: 255px; object-fit: cover;" />
                                 <div class="card-body">
                                     <h5 class="card-title">@product.Name</h5>
                                     <p class="card-text"><strong>TK: @product.Price</strong></p>
-                                    <a asp-action="OthersDetails" asp-controller="Home" asp-route-id="@product.Id" class="btn btn-primary btn-sm">View</a>
+                                    <a asp-action="OthersDetails" asp-controller="Home" asp-route-id="@product.Id" class="btn btn-success btn-sm border border-primary">View</a>
                                 </div>
                             </div>
                         </div>

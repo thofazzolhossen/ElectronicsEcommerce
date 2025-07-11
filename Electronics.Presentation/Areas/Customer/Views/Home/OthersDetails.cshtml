@@ -57,12 +57,16 @@
                         <img id="mainImage" src="@Url.Content("~/" + firstImage)" alt="Main Product Image" class="zoom-image" />
                     </div>
 
-                    <div class="thumbnail-row mt-2 d-flex gap-2">
+                    <div class="thumbnail-row mt-2 d-flex gap-2 flex-wrap">
                         @foreach (var imageUrl in Model.ImageUrls)
                         {
-                            <img src="@Url.Content("~/" + imageUrl)" alt="Thumbnail" onclick="changeMainImage(this)" style="width:255px; height:255px" />
+                            <img src="@Url.Content("~/" + imageUrl)" alt="Thumbnail"
+                                 class="img-thumbnail"
+                                 style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border: 2px solid #19c37d;"
+                                 onclick="changeMainImage(this)" />
                         }
                     </div>
+
                 }
             </div>
 

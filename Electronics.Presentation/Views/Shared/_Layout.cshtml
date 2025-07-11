@@ -57,116 +57,7 @@
     </style>
 </head>
 <body>
-    <header class="bg-light py-1">
-        <div  class="navbar navbar-expand-lg container-fluid d-flex justify-content-between align-items-center large text-muted bg-primary">
-            <div>
-                <i style="color:white" class="fa fa-phone "></i> <h6 class="d-inline" style="color:white"> 1-800-123-4567</h6>
-                <i style="color:white" class="fa fa-envelope"></i> <h6 style="color:white" class="d-inline mx-3">support@robodocbd.com</h6>
-            </div>
-            <div>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <span class="text-white me-2">👤 @User.Identity.Name</span>
-                    <form asp-area="Admin" asp-controller="Auth" asp-action="Logout" method="post" class="d-inline">
-                        <button type="submit" class="btn btn-link text-white" style="text-decoration: none;">Logout</button>
-                    </form>
-                }
-                else
-                {
-                    <a asp-area="Admin" asp-controller="Auth" asp-action="Login" class="text-muted" style="text-decoration:none">
-                        <h6 style="color:white;">Login</h6>
-                    </a>
-                }
-
-
-            </div>
-        </div>
-
-        <div class="container-fluid py-5 d-flex justify-content-between align-items-center flex-wrap">
-            <!-- Logo -->
-            <div class="d-flex align-items-center">
-                @*                 <img src="logo.png" alt="RoboDoc Logo" style="height: 40px;" />
- *@                <span class="fs-4 fw-bold text-success ms-2">eCommerce</span>
-            </div>
-
-            <!-- Small Centered Search -->
-            <div class="mx-auto" style="max-width: 800px; width: 100%;">
-                <div class="input-group input-group-lg shadow-lg">
-                    <input type="text" class="form-control rounded-start border-success" placeholder="Search anything..." aria-label="Search">
-                    <button class="btn btn-success rounded-end" type="button">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </div>
-            </div>
-
-
-            <!-- Icons -->
-            <div class="d-flex gap-3">
-                <a href="#"><i class="fa fa-user fs-6"></i></a>
-
-                <a href="@Url.Action("Index", "Cart", new { area = "Customer" })">
-                    <i class="fa fa-shopping-cart fs-6"></i>
-                    <span id="cartCount" class="badge bg-danger">@count</span>
-                </a>
-
-
-            </div>
-        </div>
-
-        <!-- Navigation -->
-        <nav class="container-fluid navbar navbar-expand-lg navbar-light bg-white">
-            <ul class="navbar-nav mx-auto">
-                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                {
-                    <li class="nav-item dropdown me-5">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" asp-area="Admin" asp-controller="ProductImage" asp-action="Index">Product Image</a></li>
-                            <li><a class="dropdown-item" asp-area="Admin" asp-controller="ProductType" asp-action="Index">Product Type</a></li>
-                            <li><a class="dropdown-item" asp-area="Admin" asp-controller="ProductTag" asp-action="Index">Product Tag</a></li>
-                            <li><a class="dropdown-item" asp-area="Admin" asp-controller="Discount" asp-action="Index">Discount</a></li>
-                            <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a></li>
-                            <li><a class="dropdown-item" asp-area="Customer" asp-controller="Cart" asp-action="AllOrders">AllOrder</a></li>
-                        </ul>
-                    </li>
-                }
-                <li class="nav-item dropdown me-5">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Identity</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Index">User</a></li>
-                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Role" asp-action="Index">Role</a></li>
-                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="AssignRole" asp-action="AssignRole">AssignRole</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown me-5">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Cart</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" asp-area="Customer" asp-controller="Cart" asp-action="Index">Index</a></li>
-                        <li><a class="dropdown-item" asp-area="Customer" asp-controller="Cart" asp-action="AllOrders">AllOrders</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown me-5">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Sensors</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Sensor 1</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item  me-5">
-                    <a class="nav-link" href="#">Innovation Kit</a>
-                </li>
-                <li class="nav-item me-5">
-                    <a class="nav-link" href="#">Gadgets & Electronics</a>
-                </li>
-                <li class="nav-item me-5">
-                    <a class="nav-link text-warning fw-bold" href="#"><i class="fa fa-gift"></i> Offers</a>
-                </li>
-
-            </ul>
-        </nav>
-    </header>
-
     <header>
-        <!-- Top Bar -->
         <div class="top-bar">
             <div class="container top-bar-content">
                 <div class="contact-info">
@@ -193,10 +84,18 @@
                     <!-- <img src="logo-vertical.webp" alt="RoboDoc Logo" class="logo"> -->
                     <span class="brand"> <img src="logo-vertical.webp" alt="TechHutBD"></span>
                 </div>
-                <form class="search-bar" id="searchForm">
+
+                <div class="search-bar position-relative">
+                    <input type="text" id="globalSearchInput" placeholder="Search products..." autocomplete="off" />
+                    <div id="searchResultsDropdown" class="position-absolute bg-white border rounded shadow p-2" style="top: 100%; left: 0; right: 0; z-index: 1000; display: none; max-height: 300px; overflow-y: auto;"></div>
+                </div>
+
+
+
+                @* <form class="search-bar">
                     <input type="text" placeholder="Search anything...">
                     <button type="submit"><i class="fa fa-search"></i></button>
-                </form>
+                </form> *@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <div class="nav-icons">
@@ -466,4 +365,115 @@
       });
     });
 
-    </script>
+
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.getElementById('globalSearchInput');
+        const dropdown = document.getElementById('searchResultsDropdown');
+        let timer;
+
+        dropdown.style.position = 'absolute';
+        dropdown.style.top = '100%';
+        dropdown.style.left = '0';
+        dropdown.style.right = '0';
+        dropdown.style.backgroundColor = '#fff';
+        dropdown.style.border = '1px solid #ddd';
+        dropdown.style.boxShadow = '0 6px 12px rgba(0,0,0,0.15)';
+        dropdown.style.maxHeight = '500px';
+        dropdown.style.overflowY = 'auto';
+        dropdown.style.overflowX = 'hidden';  // <-- হরাইজন্টাল স্ক্রল বন্ধ
+        dropdown.style.zIndex = '1050';
+        dropdown.style.display = 'none';
+        dropdown.style.padding = '0 10px 10px 10px';
+
+        input.style.fontSize = '1.15rem';
+
+        input.addEventListener('input', function () {
+            const query = this.value.trim();
+
+            clearTimeout(timer);
+
+            if (query.length < 1) {
+                dropdown.style.display = 'none';
+                dropdown.innerHTML = '';
+                return;
+            }
+
+            timer = setTimeout(() => {
+                fetch(`/Customer/Home/SearchProducts?query=${encodeURIComponent(query)}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        dropdown.innerHTML = '';
+
+                        if (data.length === 0) {
+                            dropdown.innerHTML = `
+                                <div class="p-4 text-muted text-center" style="font-size: 1.2rem;">No products found.</div>
+                            `;
+                        } else {
+                            const tableWrapper = document.createElement('div');
+                            tableWrapper.style.overflowX = 'auto';  // ছোট স্ক্রিনে স্ক্রল দিব
+
+                            const table = document.createElement('table');
+                            table.className = 'table table-hover mb-0';
+                            table.style.minWidth = '100%';   // ছোট স্ক্রিনেও পুরো প্রস্থ নেবে
+                            table.style.tableLayout = 'fixed';  // টেবিল কলাম ফিক্সড
+
+                            const thead = document.createElement('thead');
+                            thead.innerHTML = `
+                                <tr style="font-size: 1.1rem;">
+                                    <th style="width: 80px;">Image</th>
+                                    <th style="min-width: 200px;">Product Name</th>
+                                    <th style="width: 110px;">Price (৳)</th>
+                                    <th style="width: 90px;">Action</th>
+                                </tr>
+                            `;
+                            table.appendChild(thead);
+
+                            const tbody = document.createElement('tbody');
+
+                            data.slice(0, 15).forEach(p => {
+                                const tr = document.createElement('tr');
+                                tr.style.fontSize = '1.1rem';
+                                tr.innerHTML = `
+                                    <td>
+                                        <img src="/${p.imageUrls[0]}" alt="${p.name}" style="width: 70px; height: 70px; object-fit: cover; border-radius: 6px;">
+                                    </td>
+                                    <td class="align-middle text-truncate" style="max-width: 300px;">
+                                        ${p.name}
+                                    </td>
+                                    <td class="align-middle fw-bold text-success" style="font-size: 1.15rem;">
+                                        ৳${p.price.toLocaleString()}
+                                    </td>
+                                    <td class="align-middle">
+                                        <a href="/Customer/Home/OthersDetails/${p.id}" class="btn btn-sm btn-primary px-4" style="font-size: 1rem;">View</a>
+                                    </td>
+                                `;
+                                tbody.appendChild(tr);
+                            });
+
+                            table.appendChild(tbody);
+                            tableWrapper.appendChild(table);
+                            dropdown.appendChild(tableWrapper);
+                        }
+
+                        dropdown.style.display = 'block';
+                    })
+                    .catch(() => {
+                        dropdown.innerHTML = `
+                            <div class="p-4 text-danger text-center" style="font-size: 1.2rem;">Failed to load results.</div>
+                        `;
+                        dropdown.style.display = 'block';
+                    });
+            }, 400);
+        });
+
+        document.addEventListener('click', function (e) {
+            if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+    });
+
+</script>

@@ -23,6 +23,22 @@ public class HomeController : Controller
         var products = await _productService.GetAllAsync();
         return View(products);
     }
+    [HttpGet]
+    public async Task<IActionResult> SearchProducts(string? query)
+    {
+        var products = await _productService.GetAllAsync();
+
+        if (!string.IsNullOrWhiteSpace(query))
+        {
+            products = products
+                .Where(p => p.Name.Contains(query, StringComparison.OrdinalIgnoreCase)
+                            )
+                .ToList();
+        }
+
+        return Json(products);
+    }
+
     public async Task<IActionResult> AllProducts(string? type)
     {
         var allProducts = await _productService.GetAllAsync();
