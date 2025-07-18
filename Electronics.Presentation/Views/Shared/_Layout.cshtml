@@ -27,6 +27,8 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="~/Electronics.Presentation.styles.css" asp-append-version="true" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
 
     <style>
         .category-icon {
@@ -74,14 +76,12 @@
                 <a href="#" class="sign-in">Sign In</a>
             </div>
         </div>
-        <!-- Main Nav -->
         <div class="main-nav">
             <div class="container nav-content">
                 <div class="nav-left">
                     <button class="hamburger" id="hamburgerBtn">
                         <i class="fa fa-bars"></i>
                     </button>
-                    <!-- <img src="logo-vertical.webp" alt="RoboDoc Logo" class="logo"> -->
                     <span class="brand"> <img src="logo-vertical.webp" alt="TechHutBD"></span>
                 </div>
 
@@ -90,12 +90,6 @@
                     <div id="searchResultsDropdown" class="position-absolute bg-white border rounded shadow p-2" style="top: 100%; left: 0; right: 0; z-index: 1000; display: none; max-height: 300px; overflow-y: auto;"></div>
                 </div>
 
-
-
-                @* <form class="search-bar">
-                    <input type="text" placeholder="Search anything...">
-                    <button type="submit"><i class="fa fa-search"></i></button>
-                </form> *@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <div class="nav-icons">
@@ -203,33 +197,38 @@
     </nav>
 
 
- @*    <div class="container-fluid bg-light">
+
+    <div class="container-fluid bg-light">
         <div class="row">
             <!-- Categories Sidebar -->
             <div class="col-md-2 bg-white p-3 border-end">
                 <h5>Categories</h5>
                 <ul class="list-unstyled">
-                    <li><img class="category-icon" src="🧥" alt="">Men's Clothing & Fashion</li>
-                    <li><img class="category-icon" src="👗" alt="">Women's Clothing & Fashion</li>
-                    <li><img class="category-icon" src="🧸" alt="">Kids & Toy</li>
-                    <li><img class="category-icon" src="🏕️" alt="">Sports & Outdoor</li>
-                    <li><img class="category-icon" src="💎" alt="">Jewellery & Watch</li>
-                    <li><img class="category-icon" src="🏠" alt="">Home Decoration</li>
-                    <li><img class="category-icon" src="🌸" alt="">Perfume</li>
-                    <li><img class="category-icon" src="🥦" alt="">Grocery</li>
-                    <li><img class="category-icon" src="📱" alt="">Smart Phone & Accessories</li>
-                    <li><img class="category-icon" src="💻" alt="">Computer & Accessories</li>
-                    <li><img class="category-icon" src="📺" alt="">TV & Home Appliance</li>
+                    <li><i class="bi bi-person-lines-fill category-icon"></i> Men's Clothing & Fashion</li>
+                    <li><i class="bi bi-person-fill category-icon"></i> Women's Clothing & Fashion</li>
+                    <li><i class="bi bi-balloon-fill category-icon"></i> Kids & Toy</li>
+                    <li><i class="bi bi-activity category-icon"></i> Sports & Outdoor</li>
+                    <li><i class="bi bi-gem category-icon"></i> Jewellery & Watch</li>
+                    <li><i class="bi bi-house-fill category-icon"></i> Home Decoration</li>
+                    <li><i class="bi bi-flower1 category-icon"></i> Perfume</li>
+                    <li><i class="bi bi-basket-fill category-icon"></i> Grocery</li>
+                    <li><i class="bi bi-phone category-icon"></i> Smart Phone & Accessories</li>
+                    <li><i class="bi bi-laptop category-icon"></i> Computer & Accessories</li>
+                    <li><i class="bi bi-tv-fill category-icon"></i> TV & Home Appliance</li>
+
                 </ul>
             </div>
             <div class="col-md-7 p-3">
                 <div id="mainSlider" class="carousel slide mb-3" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img src="https://i.ibb.co/q7syTf7/banner1.png" class="d-block w-100" alt="Main Banner">
+                            <img src="Images/Slider-1.jpeg" class="d-block w-100" alt="Main Banner">
                         </div>
                         <div class="carousel-item">
-                            <img src="https://i.ibb.co/F3gzx6d/banner2.png" class="d-block w-100" alt="Main Banner 2">
+                            <img src="Images/Slider-2.jpeg" class="d-block w-100" alt="Main Banner 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="Images/Slider-3.jpeg" class="d-block w-100" alt="Main Banner 2">
                         </div>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#mainSlider" data-bs-slide="prev">
@@ -246,11 +245,6 @@
                     <div class="bg-white m-2 p-2 text-center"><img class="product-icon" src="https://i.ibb.co/nDhKdLf/phone.png" alt=""><p>Smartphone</p></div>
                     <div class="bg-white m-2 p-2 text-center"><img class="product-icon" src="https://i.ibb.co/wg1n6P2/pc.png" alt=""><p>PC</p></div>
                     <div class="bg-white m-2 p-2 text-center"><img class="product-icon" src="https://i.ibb.co/nL5FbV0/tv.png" alt=""><p>TV</p></div>
-                    <div class="bg-white m-2 p-2 text-center"><img class="product-icon" src="https://i.ibb.co/yY3rrLM/toy.png" alt=""><p>Toys</p></div>
-                    <div class="bg-white m-2 p-2 text-center"><img class="product-icon" src="https://i.ibb.co/yY3rrLM/toy.png" alt=""><p>Toys</p></div>
-                    <div class="bg-white m-2 p-2 text-center"><img class="product-icon" src="https://i.ibb.co/yY3rrLM/toy.png" alt=""><p>Toys</p></div>
-                    <div class="bg-white m-2 p-2 text-center"><img class="product-icon" src="https://i.ibb.co/yY3rrLM/toy.png" alt=""><p>Toys</p></div>
-                    <div class="bg-white m-2 p-2 text-center"><img class="product-icon" src="https://i.ibb.co/yY3rrLM/toy.png" alt=""><p>Toys</p></div>
                     <div class="bg-white m-2 p-2 text-center"><img class="product-icon" src="https://i.ibb.co/yY3rrLM/toy.png" alt=""><p>Toys</p></div>
                     
                 </div>
@@ -294,13 +288,14 @@
         <!-- Bottom Banners -->
         <div class="row mt-4">
             <div class="col-md-6">
-                <img src="https://i.ibb.co/YQ1pZBc/banner-bottom-left.jpg" class="img-fluid" alt="Fashion Offer">
+                <img src="Images/Mini-advertisement-1.jpg" class="img-fluid" alt="Fashion Offer">
             </div>
             <div class="col-md-6">
-                <img src="https://i.ibb.co/nCr7jcs/banner-bottom-right.jpg" class="img-fluid" alt="Winter Fest">
+                <img src="Images/Mini-advertisement-2.jpg" class="img-fluid" alt="Winter Fest">
             </div>
         </div>
-    </div> *@
+    </div>
+
     <div style="
     background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
     min-height: 100vh;
@@ -364,7 +359,7 @@
         });
       });
     });
-
+    //nn
 
 
 
