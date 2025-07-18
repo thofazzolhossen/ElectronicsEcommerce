@@ -5,15 +5,105 @@
     var groupedProducts = Model.GroupBy(p => p.ProductTypeName);
 }
 
-<div class="container mt-4">
-    <!-- Search -->
-    <div class="row mb-3 d-flex justify-content-end">
-        <div class="col-md-3">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search products..." />
+<div class="container-fluid bg-light">
+    <div class="row">
+        <!-- Categories Sidebar -->
+        <div class="col-md-2 bg-white p-3 border-end">
+            <h5>Categories</h5>
+            <ul class="list-unstyled">
+                <li><i class="bi bi-person-lines-fill category-icon"></i> Men's Clothing & Fashion</li>
+                <li><i class="bi bi-person-fill category-icon"></i> Women's Clothing & Fashion</li>
+                <li><i class="bi bi-balloon-fill category-icon"></i> Kids & Toy</li>
+                <li><i class="bi bi-activity category-icon"></i> Sports & Outdoor</li>
+                <li><i class="bi bi-gem category-icon"></i> Jewellery & Watch</li>
+                <li><i class="bi bi-house-fill category-icon"></i> Home Decoration</li>
+                <li><i class="bi bi-flower1 category-icon"></i> Perfume</li>
+                <li><i class="bi bi-basket-fill category-icon"></i> Grocery</li>
+                <li><i class="bi bi-phone category-icon"></i> Smart Phone & Accessories</li>
+                <li><i class="bi bi-laptop category-icon"></i> Computer & Accessories</li>
+                <li><i class="bi bi-tv-fill category-icon"></i> TV & Home Appliance</li>
+
+            </ul>
         </div>
+        <div class="col-md-7 p-3">
+            <div id="mainSlider" class="carousel slide mb-3" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="Images/Slider-1.jpeg" class="d-block w-100" alt="Main Banner">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="Images/Slider-2.jpeg" class="d-block w-100" alt="Main Banner 2">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="Images/Slider-3.jpeg" class="d-block w-100" alt="Main Banner 2">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#mainSlider" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#mainSlider" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-around text-center">
+                <div class="bg-white m-2 p-2 text-center"><img class="product-icon" src="https://i.ibb.co/DzfqxyF/dress.png" alt=""><p>Women's Dress</p></div>
+                <div class="bg-white m-2 p-2 text-center"><img class="product-icon" src="https://i.ibb.co/BNtpJ77/jacket.png" alt=""><p>Men's Jacket</p></div>
+                <div class="bg-white m-2 p-2 text-center"><img class="product-icon" src="https://i.ibb.co/nDhKdLf/phone.png" alt=""><p>Smartphone</p></div>
+                <div class="bg-white m-2 p-2 text-center"><img class="product-icon" src="https://i.ibb.co/wg1n6P2/pc.png" alt=""><p>PC</p></div>
+                <div class="bg-white m-2 p-2 text-center"><img class="product-icon" src="https://i.ibb.co/nL5FbV0/tv.png" alt=""><p>TV</p></div>
+                <div class="bg-white m-2 p-2 text-center"><img class="product-icon" src="https://i.ibb.co/yY3rrLM/toy.png" alt=""><p>Toys</p></div>
+
+            </div>
+        </div>
+
+        <!-- Today's Deal -->
+        <div class="col-md-3 p-3 bg-dark text-white">
+            <h6 class="mb-3">Today's Deal <span class="badge bg-danger">Hot</span></h6>
+
+            <div class="card mb-2" style="height: 120px;">
+                <div class="row g-0 h-100">
+                    <div class="col-4">
+                        <img src="https://i.ibb.co/JxWcY3m/deal1.jpg" class="img-fluid h-100" style="object-fit: cover;" alt="Deal 1">
+                    </div>
+                    <div class="col-8">
+                        <div class="card-body p-2">
+                            <p class="deal-price mb-1 fs-6 text-success">৳600.00</p>
+                            <p class="old-price mb-0 fs-6">৳650.00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-2" style="height: 120px;">
+                <div class="row g-0 h-100">
+                    <div class="col-4">
+                        <img src="https://i.ibb.co/hHzDc3L/deal2.jpg" class="img-fluid h-80" style="object-fit: cover;" alt="Deal 2">
+                    </div>
+                    <div class="col-8">
+                        <div class="card-body p-2">
+                            <p class="deal-price mb-1 fs-6 text-success">৳1,400.00</p>
+                            <p class="old-price mb-0 fs-6">৳1,500.00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Product Cards -->
+    <!-- Bottom Banners -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <img src="Images/Mini-advertisement-1.jpg" class="img-fluid" alt="Fashion Offer">
+        </div>
+        <div class="col-md-6">
+            <img src="Images/Mini-advertisement-2.jpg" class="img-fluid" alt="Winter Fest">
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4">
     <div id="productCards">
         @foreach (var group in groupedProducts)
         {
@@ -52,46 +142,3 @@
         <p class="text-muted">No products found.</p>
     </div>
 </div>
-
-@section scripts {
-    <script>
-        $(document).ready(function () {
-            const allProducts = @Html.Raw(Json.Serialize(Model));
-
-            $('#searchInput').on('input', function () {
-                const value = $(this).val().toLowerCase().trim();
-
-                if (value === '') {
-                    $('#productCards').show();
-                    $('#searchResults').hide().empty();
-                    $('#noResults').hide();
-                    return;
-                }
-
-                $('#productCards').hide();
-                $('#searchResults').empty().show();
-
-                let matched = 0;
-                allProducts.forEach(p => {
-                    if (p.name.toLowerCase().includes(value) || p.description.toLowerCase().includes(value)) {
-                        matched++;
-                        $('#searchResults').append(`
-                            <div class="col-md-3 mb-4">
-                                <div class="card">
-                                    <img src="/${p.imageUrls[0]}" class="card-img-top" alt="${p.name}" />
-                                    <div class="card-body">
-                                        <h5 class="card-title">${p.name}</h5>
-                                        <p class="card-text"><strong>TK: ${p.price}</strong></p>
-                                        <a href="/Home/Details/${p.id}" class="btn btn-primary btn-sm">Details</a>
-                                    </div>
-                                </div>
-                            </div>
-                        `);
-                    }
-                });
-
-                $('#noResults').toggle(matched === 0);
-            });
-        });
-    </script>
-}
